@@ -1,0 +1,103 @@
+@import url("https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap");
+@import "tailwindcss";
+
+:root {
+  color-scheme: light;
+  --background: #f6f5f0;
+  --surface: #fffdf8;
+  --surface-2: #f8f7f2;
+  --text: #14213d;
+  --muted: #64748b;
+  --primary: #0f766e;
+  --primary-dark: #115e59;
+  --accent: #c8a44d;
+  --accent-soft: #f3e7be;
+  --border: #e7e2d6;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  direction: rtl;
+  font-family: "Cairo", sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(circle at top right, rgba(200, 164, 77, 0.12), transparent 20%),
+    radial-gradient(circle at left center, rgba(15, 118, 110, 0.08), transparent 24%),
+    linear-gradient(180deg, #faf9f5 0%, #f4f2ec 100%);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+::selection {
+  background: rgba(15, 118, 110, 0.16);
+}
+
+.islamic-pattern {
+  position: relative;
+  overflow: hidden;
+}
+
+.islamic-pattern::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle at 25px 25px, rgba(255,255,255,0.08) 2px, transparent 2.5px),
+    radial-gradient(circle at 75px 75px, rgba(255,255,255,0.06) 2px, transparent 2.5px);
+  background-size: 100px 100px;
+  opacity: 0.45;
+}
+
+.islamic-grid {
+  position: relative;
+}
+
+.islamic-grid::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(200, 164, 77, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(200, 164, 77, 0.05) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,0.28), transparent 85%);
+}
+
+.glass-surface {
+  background: rgba(255, 253, 248, 0.78);
+  backdrop-filter: blur(12px);
+}
+
+.soft-shadow {
+  box-shadow: 0 18px 50px rgba(15, 23, 42, 0.08);
+}
+
+.elevated-shadow {
+  box-shadow: 0 20px 60px rgba(15, 23, 42, 0.12);
+}

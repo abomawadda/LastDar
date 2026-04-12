@@ -1,0 +1,24 @@
+# dependencies
+node_modules/
+
+# build
+dist/
+build/
+
+# env
+.env
+.env.local
+.env.development
+.env.production
+
+# firebase
+.firebase/
+firebase-debug.log
+
+# misc
+.DS_Store
+*.log
+
+# IDE
+.vscode/
+.idea/
