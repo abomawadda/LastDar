@@ -1,21 +1,17 @@
-import { Search, Filter } from "lucide-react";
+﻿import { Search, Filter } from "lucide-react";
 
 export default function GuardiansToolbar({ search, onSearchChange }) {
   return (
-    <section className="rounded-[28px] border border-slate-200 bg-white p-5 shadow-[0_10px_30px_rgba(15,23,42,0.05)] sm:p-6">
-      <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+    <section className="theme-surface rounded-3xl p-4 sm:p-5">
+      <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
         <div>
-          <h2 className="m-0 text-xl font-extrabold text-slate-900">
-            قائمة أولياء الأمور
-          </h2>
-          <p className="mt-2 text-sm leading-7 text-slate-500">
-            يمكنك البحث بالاسم أو الهاتف أو البريد أو صلة القرابة.
-          </p>
+          <h2 className="text-lg font-extrabold text-slate-900">بحث وفرز</h2>
+          <p className="mt-1 text-sm text-slate-500">ابحث بالاسم أو الهاتف أو البريد.</p>
         </div>
 
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-          <div className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3 focus-within:border-emerald-500 focus-within:ring-4 focus-within:ring-emerald-100">
-            <Search size={18} className="text-emerald-700" />
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+          <div className="app-input flex items-center gap-2 px-3 py-2.5">
+            <Search size={16} className="text-[var(--gold-dark)]" />
             <input
               value={search}
               onChange={(e) => onSearchChange(e.target.value)}
@@ -26,9 +22,9 @@ export default function GuardiansToolbar({ search, onSearchChange }) {
 
           <button
             type="button"
-            className="inline-flex items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-bold text-slate-700 transition hover:bg-slate-50"
+            className="inline-flex items-center justify-center gap-2 rounded-xl border border-[var(--border-gold)] bg-[var(--gold-surface)] px-4 py-2.5 text-sm font-bold text-[var(--gold-dark)]"
           >
-            <Filter size={16} />
+            <Filter size={15} />
             <span>فلترة</span>
           </button>
         </div>

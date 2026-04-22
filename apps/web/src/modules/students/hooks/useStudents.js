@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+﻿import { useEffect, useMemo, useState } from "react";
 import { getStudents } from "../services/students.service";
 
 export function useStudents() {
@@ -32,13 +32,7 @@ export function useStudents() {
     if (!q) return students;
 
     return students.filter((student) =>
-      [
-        student.fullName,
-        student.phone,
-        student.guardianName,
-        student.levelName,
-        student.className
-      ]
+      [student.fullName, student.phone, student.guardianName, student.levelName, student.className]
         .filter(Boolean)
         .some((value) => String(value).toLowerCase().includes(q))
     );

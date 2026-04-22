@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
-import { NavLink, Outlet } from "react-router-dom";
+﻿import { useEffect, useMemo, useState } from "react";
+import { NavLink, Outlet, useLocation } from "react-router-dom";
 import {
   LayoutDashboard,
   Users,
@@ -12,7 +12,6 @@ import {
   Menu,
   X,
   MoonStar,
-  Sparkles,
   BookUser,
   GraduationCap
 } from "lucide-react";
@@ -58,7 +57,7 @@ function roleLabel(role) {
     case "admin":
       return "مدير النظام";
     case "teacher":
-      return "محفظ";
+      return "محفّظ";
     case "parent":
       return "ولي أمر";
     case "student":
@@ -81,253 +80,218 @@ function roleIcon(role) {
   }
 }
 
-function NavItem({ to, label, icon: Icon, onClick, compact = false }) {
+function SidebarNavItem({ item, compact = false, onClick }) {
+  const Icon = item.icon;
+
   return (
     <NavLink
-      to={to}
+      to={item.to}
       onClick={onClick}
       className={({ isActive }) =>
         [
-          "flex items-center justify-between rounded-2xl font-semibold transition-all",
-          compact ? "px-3 py-2 text-[13px]" : "px-4 py-3 text-sm",
+          "flex items-center justify-between rounded-xl border px-3 transition-all",
+          compact ? "py-2 text-xs" : "py-2.5 text-sm",
           isActive
-            ? "bg-emerald-700 text-white shadow-sm"
-            : "text-slate-700 hover:bg-emerald-50 hover:text-emerald-800"
+            ? "border-[var(--border-gold)] bg-[var(--gold-surface)] text-[var(--gold-dark)]"
+            : "border-transparent text-slate-600 hover:border-[var(--border)] hover:bg-[var(--bg-input)]"
         ].join(" ")
       }
     >
-      <span>{label}</span>
-      <Icon size={compact ? 15 : 18} />
+      <span className="font-bold">{item.label}</span>
+      <Icon size={compact ? 15 : 17} />
     </NavLink>
   );
 }
 
-function SidebarContent({
-  onItemClick,
-  userProfile,
-  firebaseUser,
-  logout,
-  compact = false,
-  navItems
-}) {
-  const RoleIcon = roleIcon(userProfile?.role);
+function DesktopSidebar({ navItems, userProfile, firebaseUser, role, logout }) {
+  const RoleIcon = roleIcon(role);
 
   return (
-    <div className="flex min-h-full flex-col">
-      <div
-        className={[
-          "bg-gradient-to-br from-emerald-800 via-emerald-700 to-emerald-600 text-white shadow-sm",
-          compact ? "mb-3 rounded-[20px] p-3" : "mb-4 rounded-[26px] p-3.5"
-        ].join(" ")}
-      >
-        <div className={["flex items-center justify-between", compact ? "mb-2.5" : "mb-3"].join(" ")}>
-          <span
-            className={[
-              "rounded-full bg-amber-400/90 font-bold text-emerald-950",
-              compact ? "px-2.5 py-1 text-[10px]" : "px-3 py-1 text-xs"
-            ].join(" ")}
-          >
-            {roleLabel(userProfile?.role)}
-          </span>
-
-          <div
-            className={[
-              "rounded-2xl bg-white/15 text-amber-100",
-              compact ? "p-1.5" : "p-2"
-            ].join(" ")}
-          >
-            <RoleIcon size={compact ? 15 : 18} />
+    <aside className="theme-surface sticky top-20 hidden h-[calc(100vh-112px)] overflow-y-auto rounded-3xl p-4 lg:block">
+      <div className="theme-hero rounded-2xl p-4 text-white">
+        <div className="mb-3 flex items-center justify-between">
+          <span className="rounded-full bg-white/15 px-2.5 py-1 text-xs font-bold">{roleLabel(role)}</span>
+          <div className="rounded-xl bg-white/15 p-2">
+            <RoleIcon size={16} />
           </div>
         </div>
 
-        <h2
-          className={[
-            "m-0 font-extrabold leading-7",
-            compact ? "text-[13px]" : "text-base"
-          ].join(" ")}
-        >
-          دار المناجاة لتحفيظ القرآن الكريم
-        </h2>
-
-        <p
-          className={[
-            "text-emerald-50/90",
-            compact ? "mt-1 text-[11px] leading-5" : "mt-1 text-xs leading-6"
-          ].join(" ")}
-        >
-          {userProfile?.fullName || "مستخدم النظام"}
-        </p>
-
-        <div
-          className={[
-            "rounded-2xl bg-white/10",
-            compact ? "mt-2.5 px-2.5 py-2" : "mt-3 px-3 py-2"
-          ].join(" ")}
-        >
-          <p
-            className={[
-              "m-0 text-emerald-50/80",
-              compact ? "text-[10px]" : "text-[11px]"
-            ].join(" ")}
-          >
-            المستخدم الحالي
-          </p>
-
-          <p
-            className={[
-              "m-0 truncate font-bold",
-              compact ? "text-[12px]" : "text-sm"
-            ].join(" ")}
-          >
-            {userProfile?.email || firebaseUser?.email || "مستخدم"}
-          </p>
-
-          <p
-            className={[
-              "m-0 text-emerald-50/80",
-              compact ? "mt-1 text-[10px]" : "mt-1 text-[11px]"
-            ].join(" ")}
-          >
-            الدور: {roleLabel(userProfile?.role)}
-          </p>
-        </div>
+        <p className="text-sm font-extrabold leading-7">دار المناجاة لتحفيظ القرآن الكريم</p>
+        <p className="mt-1 truncate text-xs text-white/85">{userProfile?.fullName || "مستخدم النظام"}</p>
+        <p className="truncate text-[11px] text-white/75">{userProfile?.email || firebaseUser?.email || "-"}</p>
       </div>
 
-      <div
-        className={[
-          "px-1 font-semibold text-slate-500",
-          compact ? "mb-2 text-[10px]" : "mb-3 text-xs"
-        ].join(" ")}
-      >
-        التنقل الرئيسي
-      </div>
-
-      <nav className={compact ? "space-y-1" : "space-y-2"}>
+      <p className="mb-2 mt-4 px-1 text-[11px] font-bold text-slate-500">التنقل</p>
+      <div className="space-y-1.5">
         {navItems.map((item) => (
-          <NavItem
-            key={item.to}
-            to={item.to}
-            label={item.label}
-            icon={item.icon}
-            onClick={onItemClick}
-            compact={compact}
-          />
+          <SidebarNavItem key={item.to} item={item} />
         ))}
-      </nav>
+      </div>
 
-      <div className={compact ? "mt-auto pt-3" : "mt-auto pt-4"}>
+      <button
+        type="button"
+        onClick={logout}
+        className="mt-4 flex w-full items-center justify-between rounded-xl border border-red-200 bg-red-50 px-3 py-2.5 text-sm font-bold text-red-700 transition hover:bg-red-100"
+      >
+        <span>تسجيل الخروج</span>
+        <LogOut size={16} />
+      </button>
+    </aside>
+  );
+}
+
+function MobileDrawer({ open, onClose, navItems, role, logout }) {
+  if (!open) return null;
+
+  return (
+    <div className="fixed inset-0 z-[60] lg:hidden">
+      <button
+        type="button"
+        className="absolute inset-0 bg-black/35"
+        onClick={onClose}
+        aria-label="close"
+      />
+
+      <div className="absolute right-0 top-0 h-full w-[82%] max-w-[320px] bg-[var(--bg-secondary)] p-4 shadow-2xl">
+        <div className="mb-4 flex items-center justify-between">
+          <h3 className="text-base font-extrabold text-slate-900">القائمة</h3>
+          <button
+            type="button"
+            onClick={onClose}
+            className="rounded-xl border border-[var(--border)] p-2 text-slate-600"
+          >
+            <X size={16} />
+          </button>
+        </div>
+
+        <div className="space-y-1.5">
+          {navItems.map((item) => (
+            <SidebarNavItem key={item.to} item={item} compact onClick={onClose} />
+          ))}
+        </div>
+
+        <div className="mt-4 rounded-xl bg-[var(--bg-input)] p-3 text-xs text-slate-600">الصلاحية الحالية: {roleLabel(role)}</div>
+
         <button
+          type="button"
           onClick={logout}
-          className={[
-            "flex w-full items-center justify-between rounded-2xl bg-red-500 font-bold text-white transition hover:bg-red-600",
-            compact ? "px-3 py-2.5 text-[12px]" : "px-4 py-3 text-sm"
-          ].join(" ")}
+          className="mt-4 flex w-full items-center justify-between rounded-xl border border-red-200 bg-red-50 px-3 py-2.5 text-sm font-bold text-red-700"
         >
           <span>تسجيل الخروج</span>
-          <LogOut size={compact ? 15 : 18} />
+          <LogOut size={16} />
         </button>
       </div>
     </div>
   );
 }
 
+function MobileBottomNav({ navItems }) {
+  const location = useLocation();
+  const tabs = navItems.slice(0, 4);
+
+  if (!tabs.length) return null;
+
+  return (
+    <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-[var(--border)] bg-[rgba(255,255,255,0.94)] px-2 pb-[max(env(safe-area-inset-bottom),8px)] pt-2 backdrop-blur-xl lg:hidden">
+      <div className="mx-auto grid max-w-[440px] grid-cols-4 gap-1">
+        {tabs.map((tab) => {
+          const Icon = tab.icon;
+          const active = location.pathname === tab.to || (tab.to !== "/" && location.pathname.startsWith(tab.to));
+
+          return (
+            <NavLink
+              key={tab.to}
+              to={tab.to}
+              className={[
+                "flex flex-col items-center justify-center rounded-xl px-2 py-2 text-[11px] font-bold transition",
+                active
+                  ? "bg-[var(--gold-surface)] text-[var(--gold-dark)]"
+                  : "text-slate-500 hover:bg-[var(--bg-input)]"
+              ].join(" ")}
+            >
+              <Icon size={18} />
+              <span className="mt-1 truncate">{tab.label}</span>
+            </NavLink>
+          );
+        })}
+      </div>
+    </nav>
+  );
+}
+
 export default function DashboardLayout() {
   const { firebaseUser, userProfile, logout, role } = useAuth();
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const navItems = useMemo(() => buildNavItems(role), [role]);
 
   useEffect(() => {
-    if (sidebarOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-
+    document.body.style.overflow = drawerOpen ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
     };
-  }, [sidebarOpen]);
+  }, [drawerOpen]);
 
   return (
-    <div className="min-h-screen bg-transparent text-slate-900">
-      <header className="sticky top-0 z-40 border-b border-slate-200/80 bg-white/90 backdrop-blur">
-        <div className="mx-auto flex max-w-[1500px] items-center justify-between gap-4 px-4 py-4 sm:px-6 xl:px-8">
+    <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)]">
+      <header className="sticky top-0 z-40 border-b border-[var(--border)] bg-[rgba(247,246,243,0.88)] backdrop-blur-xl">
+        <div className="mx-auto flex w-full max-w-[1400px] items-center justify-between gap-3 px-3 py-3 sm:px-4 lg:px-6">
           <div className="flex items-center gap-3">
             <button
               type="button"
-              className="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-slate-200 bg-white text-slate-700 lg:hidden"
-              onClick={() => setSidebarOpen(true)}
+              className="rounded-xl border border-[var(--border)] bg-[var(--bg-secondary)] p-2 text-slate-700 lg:hidden"
+              onClick={() => setDrawerOpen(true)}
             >
-              <Menu size={20} />
+              <Menu size={18} />
             </button>
 
             <div>
-              <h1 className="m-0 text-xl font-extrabold text-slate-900 sm:text-2xl">
-                دار تحفيظ القرآن الكريم
-              </h1>
-              <p className="mt-1 text-xs text-slate-500 sm:text-sm">
-                هوية عربية حديثة بطابع إسلامي هادئ ومتوافق مع الأجهزة اللوحية
-              </p>
+              <h1 className="text-base font-extrabold text-slate-900 sm:text-lg">دار المناجاة</h1>
+              <p className="text-[11px] text-slate-500 sm:text-xs">نظام إدارة تحفيظ القرآن الكريم</p>
             </div>
           </div>
 
-          <div className="hidden rounded-2xl border border-amber-200 bg-amber-50 px-4 py-2 text-right sm:block">
-            <p className="m-0 text-xs text-amber-700">النسخة الحالية</p>
-            <p className="m-0 flex items-center gap-2 text-sm font-bold text-amber-900">
-              <Sparkles size={14} />
-              <span>{roleLabel(role)}</span>
-            </p>
+          <div className="flex items-center gap-2">
+            <div className="hidden rounded-full border border-[var(--border-gold)] bg-[var(--gold-surface)] px-3 py-1 text-xs font-bold text-[var(--gold-dark)] sm:block">
+              {roleLabel(role)}
+            </div>
+
+            <button
+              type="button"
+              onClick={logout}
+              className="hidden items-center gap-2 rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-xs font-bold text-red-700 transition hover:bg-red-100 lg:flex"
+            >
+              <LogOut size={14} />
+              <span>خروج</span>
+            </button>
           </div>
         </div>
       </header>
 
-      <div className="mx-auto grid max-w-[1500px] grid-cols-1 gap-5 px-4 py-5 sm:px-6 lg:grid-cols-[260px_minmax(0,1fr)] xl:px-8">
-        <aside className="hidden self-start rounded-[28px] border border-slate-200 bg-white/95 p-4 shadow-[0_10px_30px_rgba(15,23,42,0.06)] lg:block">
-          <SidebarContent
+      <div className="mx-auto w-full max-w-[1400px] px-3 pb-24 pt-4 sm:px-4 lg:px-6 lg:pb-6">
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-[285px_minmax(0,1fr)] lg:gap-6">
+          <DesktopSidebar
+            navItems={navItems}
             userProfile={userProfile}
             firebaseUser={firebaseUser}
+            role={role}
             logout={logout}
-            navItems={navItems}
           />
-        </aside>
 
-        <main className="min-w-0">
-          <Outlet />
-        </main>
+          <main className="mobile-card-reveal min-w-0">
+            <Outlet />
+          </main>
+        </div>
       </div>
 
-      {sidebarOpen && (
-        <div className="fixed inset-0 z-50 lg:hidden">
-          <div
-            className="absolute inset-0 bg-slate-900/45 backdrop-blur-[2px]"
-            onClick={() => setSidebarOpen(false)}
-          />
+      <MobileDrawer
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        navItems={navItems}
+        role={role}
+        logout={logout}
+      />
 
-          <div className="absolute right-0 top-0 h-full w-[68%] max-w-[220px] overflow-y-auto bg-white p-3 shadow-2xl">
-            <div className="mb-3 flex items-center justify-between">
-              <h3 className="m-0 text-base font-extrabold text-slate-900">القائمة</h3>
-
-              <button
-                type="button"
-                className="inline-flex h-9 w-9 items-center justify-center rounded-2xl border border-slate-200"
-                onClick={() => setSidebarOpen(false)}
-              >
-                <X size={16} />
-              </button>
-            </div>
-
-            <SidebarContent
-              userProfile={userProfile}
-              firebaseUser={firebaseUser}
-              logout={logout}
-              onItemClick={() => setSidebarOpen(false)}
-              compact
-              navItems={navItems}
-            />
-          </div>
-        </div>
-      )}
+      <MobileBottomNav navItems={navItems} />
     </div>
   );
 }

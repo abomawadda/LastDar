@@ -1,48 +1,66 @@
+﻿import { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./protectedRoutes";
-import DashboardLayout from "../layouts/DashboardLayout";
-import LoginPage from "../../modules/auth/pages/LoginPage";
-import DashboardPage from "../../modules/dashboard/pages/DashboardPage";
-import StudentsListPage from "../../modules/students/pages/StudentsListPage";
-import StudentCreatePage from "../../modules/students/pages/StudentCreatePage";
-import GuardiansListPage from "../../modules/guardians/pages/GuardiansListPage";
-import GuardianCreatePage from "../../modules/guardians/pages/GuardianCreatePage";
 
-function Placeholder({ title }) {
+const DashboardLayout = lazy(() => import("../layouts/DashboardLayout"));
+const LoginPage = lazy(() => import("../../modules/auth/pages/LoginPage"));
+const DashboardPage = lazy(() => import("../../modules/dashboard/pages/DashboardPage"));
+
+const StudentsListPage = lazy(() => import("../../modules/students/pages/StudentsListPage"));
+const StudentCreatePage = lazy(() => import("../../modules/students/pages/StudentCreatePage"));
+const StudentDetailsPage = lazy(() => import("../../modules/students/pages/StudentDetailsPage"));
+const StudentEditPage = lazy(() => import("../../modules/students/pages/StudentEditPage"));
+const StudentFreezePage = lazy(() => import("../../modules/students/pages/StudentFreezePage"));
+const StudentTransferPage = lazy(() => import("../../modules/students/pages/StudentTransferPage"));
+
+const GuardiansListPage = lazy(() => import("../../modules/guardians/pages/GuardiansListPage"));
+const GuardianCreatePage = lazy(() => import("../../modules/guardians/pages/GuardianCreatePage"));
+
+const ClassesPage = lazy(() => import("../../modules/classes/pages/ClassesPage"));
+const AttendancePage = lazy(() => import("../../modules/attendance/pages/AttendancePage"));
+const MemorizationPage = lazy(() => import("../../modules/memorization/pages/MemorizationPage"));
+const FinancePage = lazy(() => import("../../modules/finance/pages/FinancePage"));
+
+function RouteLoader() {
   return (
-    <div className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-[0_10px_30px_rgba(15,23,42,0.05)]">
-      <h2 className="text-2xl font-extrabold text-slate-900">{title}</h2>
-      <p className="mt-3 text-sm leading-8 text-slate-600">
-        الصفحة قيد الإنشاء، وسيتم تحويلها إلى شاشة تشغيل احترافية متوافقة مع
-        الأجهزة اللوحية والموبايل وواجهة عربية حديثة.
-      </p>
+    <div className="theme-surface flex min-h-[220px] items-center justify-center rounded-3xl p-6 text-sm font-bold text-slate-600">
+      جاري تحميل الصفحة...
     </div>
   );
 }
 
 export default function AppRouter() {
   return (
-    <Routes>
-      <Route path="/login" element={<LoginPage />} />
+    <Suspense fallback={<RouteLoader />}>
+      <Routes>
+        <Route path="/login" element={<LoginPage />} />
 
-      <Route
-        path="/"
-        element={
-          <ProtectedRoute>
-            <DashboardLayout />
-          </ProtectedRoute>
-        }
-      >
-        <Route index element={<DashboardPage />} />
-        <Route path="students" element={<StudentsListPage />} />
-        <Route path="students/create" element={<StudentCreatePage />} />
-        <Route path="classes" element={<Placeholder title="الحلقات" />} />
-        <Route path="attendance" element={<Placeholder title="الحضور" />} />
-        <Route path="memorization" element={<Placeholder title="التسميع" />} />
-        <Route path="finance" element={<Placeholder title="المالية" />} />
-        <Route path="guardians" element={<GuardiansListPage />} />
-<Route path="guardians/create" element={<GuardianCreatePage />} />
-      </Route>
-    </Routes>
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route index element={<DashboardPage />} />
+
+          <Route path="students" element={<StudentsListPage />} />
+          <Route path="students/create" element={<StudentCreatePage />} />
+          <Route path="students/:studentId" element={<StudentDetailsPage />} />
+          <Route path="students/:studentId/edit" element={<StudentEditPage />} />
+          <Route path="students/:studentId/freeze" element={<StudentFreezePage />} />
+          <Route path="students/:studentId/transfer" element={<StudentTransferPage />} />
+
+          <Route path="guardians" element={<GuardiansListPage />} />
+          <Route path="guardians/create" element={<GuardianCreatePage />} />
+
+          <Route path="classes" element={<ClassesPage />} />
+          <Route path="attendance" element={<AttendancePage />} />
+          <Route path="memorization" element={<MemorizationPage />} />
+          <Route path="finance" element={<FinancePage />} />
+        </Route>
+      </Routes>
+    </Suspense>
   );
 }

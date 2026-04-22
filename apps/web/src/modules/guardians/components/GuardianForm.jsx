@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import {
   User,
   Phone,
@@ -43,26 +43,17 @@ const initialState = {
 function FieldShell({ label, icon: Icon, error, children, required = false }) {
   return (
     <div>
-      <label className="mb-2 block text-sm font-bold text-slate-700">
+      <label className="mb-1.5 block text-sm font-bold text-slate-700">
         <span className="inline-flex items-center gap-2">
-          <Icon size={16} className="text-emerald-700" />
+          <Icon size={15} className="text-[var(--gold-dark)]" />
           <span>{label}</span>
           {required ? <span className="text-red-500">*</span> : null}
         </span>
       </label>
 
-      <div
-        className={[
-          "rounded-2xl border bg-white px-4 py-3 focus-within:ring-4",
-          error
-            ? "border-red-300 focus-within:border-red-400 focus-within:ring-red-100"
-            : "border-slate-200 focus-within:border-emerald-500 focus-within:ring-emerald-100"
-        ].join(" ")}
-      >
-        {children}
-      </div>
+      <div className={["app-input px-3 py-2.5", error ? "border-red-300" : ""].join(" ")}>{children}</div>
 
-      {error ? <p className="mt-2 text-xs font-bold text-red-600">{error}</p> : null}
+      {error ? <p className="mt-1.5 text-xs font-bold text-red-600">{error}</p> : null}
     </div>
   );
 }
@@ -83,27 +74,21 @@ export default function GuardianForm({ onSubmit, loading = false }) {
 
     if (!result.success) {
       const fieldErrors = {};
-
       for (const issue of result.error.issues) {
         const fieldName = issue.path?.[0];
-        if (fieldName && !fieldErrors[fieldName]) {
-          fieldErrors[fieldName] = issue.message;
-        }
+        if (fieldName && !fieldErrors[fieldName]) fieldErrors[fieldName] = issue.message;
       }
-
       setErrors(fieldErrors);
       return;
     }
 
     setErrors({});
-    onSubmit?.(result.data, {
-      reset: () => setForm(initialState)
-    });
+    onSubmit?.(result.data, { reset: () => setForm(initialState) });
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-5">
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
         <FieldShell label="اسم ولي الأمر" icon={User} error={errors.fullName} required>
           <input
             value={form.fullName}
@@ -113,7 +98,7 @@ export default function GuardianForm({ onSubmit, loading = false }) {
           />
         </FieldShell>
 
-        <FieldShell label="رقم الموبايل الأساسي" icon={Phone} error={errors.phone} required>
+        <FieldShell label="رقم الهاتف الأساسي" icon={Phone} error={errors.phone} required>
           <input
             value={form.phone}
             onChange={(e) => updateField("phone", e.target.value)}
@@ -122,7 +107,7 @@ export default function GuardianForm({ onSubmit, loading = false }) {
           />
         </FieldShell>
 
-        <FieldShell label="رقم موبايل بديل" icon={Phone} error={errors.alternatePhone}>
+        <FieldShell label="رقم بديل" icon={Phone} error={errors.alternatePhone}>
           <input
             value={form.alternatePhone}
             onChange={(e) => updateField("alternatePhone", e.target.value)}
@@ -158,13 +143,13 @@ export default function GuardianForm({ onSubmit, loading = false }) {
           <input
             value={form.nationalId}
             onChange={(e) => updateField("nationalId", e.target.value)}
-            placeholder="14 رقمًا"
+            placeholder="14 رقم"
             maxLength={14}
             className="w-full border-0 bg-transparent text-sm text-slate-900 outline-none placeholder:text-slate-400"
           />
         </FieldShell>
 
-        <FieldShell label="المهنة / الوظيفة" icon={Briefcase} error={errors.jobTitle}>
+        <FieldShell label="المهنة" icon={Briefcase} error={errors.jobTitle}>
           <input
             value={form.jobTitle}
             onChange={(e) => updateField("jobTitle", e.target.value)}
@@ -173,11 +158,7 @@ export default function GuardianForm({ onSubmit, loading = false }) {
           />
         </FieldShell>
 
-        <FieldShell
-          label="طريقة التواصل المفضلة"
-          icon={MessageSquare}
-          error={errors.preferredContactMethod}
-        >
+        <FieldShell label="طريقة التواصل" icon={MessageSquare} error={errors.preferredContactMethod}>
           <select
             value={form.preferredContactMethod}
             onChange={(e) => updateField("preferredContactMethod", e.target.value)}
@@ -215,14 +196,14 @@ export default function GuardianForm({ onSubmit, loading = false }) {
         </div>
       </div>
 
-      <div className="flex flex-col-reverse gap-3 pt-2 sm:flex-row sm:justify-end">
+      <div className="flex flex-col-reverse gap-2.5 pt-1 sm:flex-row sm:justify-end">
         <button
           type="button"
           onClick={() => {
             setForm(initialState);
             setErrors({});
           }}
-          className="rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-bold text-slate-700 transition hover:bg-slate-50"
+          className="rounded-xl border border-[var(--border)] bg-[var(--bg-secondary)] px-4 py-2.5 text-sm font-bold text-slate-700"
         >
           إعادة تعيين
         </button>
@@ -230,7 +211,7 @@ export default function GuardianForm({ onSubmit, loading = false }) {
         <button
           type="submit"
           disabled={loading}
-          className="rounded-2xl bg-gradient-to-l from-emerald-700 to-emerald-600 px-5 py-3 text-sm font-extrabold text-white shadow-[0_12px_30px_rgba(5,150,105,0.18)] transition hover:from-emerald-800 hover:to-emerald-700 disabled:cursor-not-allowed disabled:opacity-70"
+          className="rounded-xl bg-gradient-to-l from-[var(--gold-light)] to-[var(--gold-dark)] px-5 py-2.5 text-sm font-extrabold text-white shadow-[0_10px_22px_rgba(139,109,47,0.26)] disabled:cursor-not-allowed disabled:opacity-70"
         >
           {loading ? "جاري الحفظ..." : "حفظ ولي الأمر"}
         </button>

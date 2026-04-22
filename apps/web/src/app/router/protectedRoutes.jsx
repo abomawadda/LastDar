@@ -1,18 +1,18 @@
-import { Navigate } from "react-router-dom";
+﻿import { Navigate } from "react-router-dom";
 import { useAuth } from "../providers/AuthProvider";
 
 export default function ProtectedRoute({ children }) {
-  const { user, authLoading } = useAuth();
+  const { firebaseUser, authLoading } = useAuth();
 
   if (authLoading) {
     return (
-      <div style={{ padding: 24, direction: "rtl", fontFamily: "sans-serif" }}>
-        جاري التحقق من تسجيل الدخول...
+      <div className="theme-surface mx-auto mt-8 max-w-xl rounded-3xl p-6 text-center text-sm font-bold text-slate-600">
+        جاري التحقق من بيانات الدخول...
       </div>
     );
   }
 
-  if (!user) {
+  if (!firebaseUser) {
     return <Navigate to="/login" replace />;
   }
 

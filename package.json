@@ -1,1 +1,22 @@
-{"name":"dar-alquran-system","private":true,"workspaces":["apps/*","packages/*"],"scripts":{"dev:web":"npm run dev --workspace apps/web","dev:server":"npm run dev --workspace apps/server"},"dependencies":{"firebase":"^12.12.0"}}
+{
+  "name": "dar-alquran-system",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:web": "npm run dev --workspace apps/web",
+    "dev:server": "npm run dev --workspace apps/server",
+    "build:web": "npm run build --workspace apps/web",
+    "lint:web": "npm run lint --workspace apps/web",
+    "test:web": "npm run test --workspace apps/web",
+    "test:server": "npm run test --workspace apps/server",
+    "lint": "npm run lint:web",
+    "test": "npm run test:web && npm run test:server"
+  },
+  "dependencies": {
+    "firebase": "^12.12.0"
+  }
+}
+

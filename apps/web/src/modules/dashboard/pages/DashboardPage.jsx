@@ -1,4 +1,4 @@
-import {
+﻿import {
   Users,
   BookOpen,
   ClipboardCheck,
@@ -10,59 +10,64 @@ import {
 } from "lucide-react";
 import { useAuth } from "../../../app/providers/AuthProvider";
 
+function Hero({ icon: Icon, badge, title, description }) {
+  return (
+    <section className="theme-hero relative overflow-hidden rounded-3xl p-6 text-white sm:p-8">
+      <div className="absolute -left-8 -top-8 h-28 w-28 rounded-full bg-white/10 blur-2xl" />
+      <div className="absolute bottom-0 right-0 h-24 w-24 rounded-full bg-white/10 blur-2xl" />
+
+      <div className="relative">
+        <div className="theme-chip mb-3 inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs sm:text-sm">
+          <Icon size={15} />
+          <span>{badge}</span>
+        </div>
+
+        <h2 className="text-2xl font-extrabold sm:text-4xl">{title}</h2>
+        <p className="mt-3 max-w-3xl text-sm leading-8 text-white/85 sm:text-base">{description}</p>
+      </div>
+    </section>
+  );
+}
+
+function StatCard({ title, value, note, icon: Icon }) {
+  return (
+    <article className="theme-stat-card rounded-2xl p-4">
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <p className="text-xs font-bold text-slate-500 sm:text-sm">{title}</p>
+          <h3 className="mt-2 text-3xl font-extrabold text-slate-900">{value}</h3>
+          <p className="mt-1 text-xs text-slate-500 sm:text-sm">{note}</p>
+        </div>
+
+        <div className="theme-icon-box rounded-xl p-2.5">
+          <Icon size={18} />
+        </div>
+      </div>
+    </article>
+  );
+}
+
 function AdminDashboard() {
   const stats = [
     { title: "إجمالي الطلاب", value: "128", note: "نشطون حاليًا", icon: Users },
     { title: "الحلقات", value: "12", note: "صباحية ومسائية", icon: BookOpen },
-    { title: "الحضور اليوم", value: "91%", note: "آخر تحديث اليوم", icon: ClipboardCheck },
-    { title: "الرسوم المستحقة", value: "14", note: "تحتاج متابعة", icon: Wallet }
+    { title: "حضور اليوم", value: "91%", note: "آخر تحديث اليوم", icon: ClipboardCheck },
+    { title: "رسوم مستحقة", value: "14", note: "تحتاج متابعة", icon: Wallet }
   ];
 
   return (
-    <div className="space-y-5">
-      <section className="relative overflow-hidden rounded-[32px] bg-gradient-to-l from-emerald-900 via-emerald-800 to-emerald-700 p-6 text-white shadow-[0_18px_40px_rgba(5,150,105,0.18)] sm:p-8">
-        <div className="absolute -left-10 -top-10 h-40 w-40 rounded-full bg-white/10 blur-2xl" />
-        <div className="absolute bottom-0 right-0 h-32 w-32 rounded-full bg-amber-300/10 blur-2xl" />
+    <div className="space-y-4">
+      <Hero
+        icon={Sparkles}
+        badge="لوحة المدير"
+        title="لوحة التحكم الإدارية"
+        description="متابعة شاملة للطلاب وأولياء الأمور والحلقات والحضور والتسميع والمالية في مكان واحد."
+      />
 
-        <div className="relative">
-          <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm">
-            <Sparkles size={16} />
-            <span>لوحة المدير</span>
-          </div>
-
-          <h2 className="m-0 text-2xl font-extrabold leading-relaxed sm:text-4xl">
-            لوحة التحكم الإدارية
-          </h2>
-
-          <p className="mt-4 max-w-3xl text-sm leading-8 text-emerald-50 sm:text-base">
-            متابعة شاملة للطلاب، أولياء الأمور، الحلقات، الحضور، التسميع، والمالية.
-          </p>
-        </div>
-      </section>
-
-      <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 2xl:grid-cols-4">
-        {stats.map((item) => {
-          const Icon = item.icon;
-
-          return (
-            <article
-              key={item.title}
-              className="rounded-[28px] border border-slate-200 bg-white p-5 shadow-[0_10px_30px_rgba(15,23,42,0.05)]"
-            >
-              <div className="flex items-start justify-between gap-4">
-                <div>
-                  <p className="m-0 text-sm font-semibold text-slate-500">{item.title}</p>
-                  <h3 className="mt-3 text-4xl font-extrabold text-slate-900">{item.value}</h3>
-                  <p className="mt-2 text-sm text-slate-500">{item.note}</p>
-                </div>
-
-                <div className="rounded-2xl bg-emerald-50 p-3 text-emerald-700">
-                  <Icon size={22} />
-                </div>
-              </div>
-            </article>
-          );
-        })}
+      <section className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        {stats.map((item) => (
+          <StatCard key={item.title} {...item} />
+        ))}
       </section>
     </div>
   );
@@ -70,75 +75,54 @@ function AdminDashboard() {
 
 function TeacherDashboard() {
   return (
-    <div className="space-y-5">
-      <section className="rounded-[30px] bg-gradient-to-l from-emerald-900 via-emerald-800 to-emerald-700 p-6 text-white shadow-[0_18px_40px_rgba(5,150,105,0.18)] sm:p-8">
-        <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm">
-          <BookUser size={16} />
-          <span>لوحة المحفظ</span>
-        </div>
+    <div className="space-y-4">
+      <Hero
+        icon={BookUser}
+        badge="لوحة المحفّظ"
+        title="متابعة الحلقات اليومية"
+        description="تابع الحضور والتسميع وخطة الحفظ اليومية لطلابك بشكل سريع وسلس."
+      />
 
-        <h2 className="mt-4 text-2xl font-extrabold sm:text-4xl">مرحبًا بك يا محفظ</h2>
-        <p className="mt-3 max-w-3xl text-sm leading-8 text-emerald-50 sm:text-base">
-          من هنا ستتابع حلقاتك، الحضور اليومي، التسميع، والطلاب المتأخرين.
-        </p>
+      <section className="theme-surface rounded-3xl p-5">
+        <h3 className="text-lg font-extrabold text-slate-900">مهام اليوم</h3>
+        <p className="mt-2 text-sm leading-8 text-slate-600">سيتم هنا عرض الحلقات المسندة إليك وجلسات التسميع والطلاب المتأخرين.</p>
       </section>
-
-      <div className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-[0_10px_30px_rgba(15,23,42,0.05)]">
-        <h3 className="text-xl font-extrabold text-slate-900">مهامك اليوم</h3>
-        <p className="mt-3 text-sm leading-8 text-slate-600">
-          سيتم هنا لاحقًا عرض الحلقات المسندة إليك، جلسات الحضور، والتسميع اليومي.
-        </p>
-      </div>
     </div>
   );
 }
 
 function ParentDashboard() {
   return (
-    <div className="space-y-5">
-      <section className="rounded-[30px] bg-gradient-to-l from-emerald-900 via-emerald-800 to-emerald-700 p-6 text-white shadow-[0_18px_40px_rgba(5,150,105,0.18)] sm:p-8">
-        <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm">
-          <UserSquare2 size={16} />
-          <span>لوحة ولي الأمر</span>
-        </div>
+    <div className="space-y-4">
+      <Hero
+        icon={UserSquare2}
+        badge="لوحة ولي الأمر"
+        title="متابعة الأبناء"
+        description="متابعة الحضور والتقدم والرسوم الخاصة بالأبناء بواجهة واضحة وسهلة."
+      />
 
-        <h2 className="mt-4 text-2xl font-extrabold sm:text-4xl">متابعة الأبناء</h2>
-        <p className="mt-3 max-w-3xl text-sm leading-8 text-emerald-50 sm:text-base">
-          من هنا سيتم متابعة الحضور، التقدم، الرسوم، والتقارير الخاصة بالأبناء.
-        </p>
+      <section className="theme-surface rounded-3xl p-5">
+        <h3 className="text-lg font-extrabold text-slate-900">ملف الأبناء</h3>
+        <p className="mt-2 text-sm leading-8 text-slate-600">ستظهر هنا بيانات الأبناء المرتبطين بحسابك بعد اكتمال الربط.</p>
       </section>
-
-      <div className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-[0_10px_30px_rgba(15,23,42,0.05)]">
-        <h3 className="text-xl font-extrabold text-slate-900">ملف الأبناء</h3>
-        <p className="mt-3 text-sm leading-8 text-slate-600">
-          سيتم عرض الأبناء المرتبطين بهذا الحساب بمجرد اكتمال الربط التلقائي.
-        </p>
-      </div>
     </div>
   );
 }
 
 function StudentDashboard() {
   return (
-    <div className="space-y-5">
-      <section className="rounded-[30px] bg-gradient-to-l from-emerald-900 via-emerald-800 to-emerald-700 p-6 text-white shadow-[0_18px_40px_rgba(5,150,105,0.18)] sm:p-8">
-        <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm">
-          <GraduationCap size={16} />
-          <span>لوحة الطالب</span>
-        </div>
+    <div className="space-y-4">
+      <Hero
+        icon={GraduationCap}
+        badge="لوحة الطالب"
+        title="رحلة الحفظ"
+        description="متابعة إنجازك اليومي في الحفظ والمراجعة والحضور بخطوات واضحة."
+      />
 
-        <h2 className="mt-4 text-2xl font-extrabold sm:text-4xl">مرحبًا بك</h2>
-        <p className="mt-3 max-w-3xl text-sm leading-8 text-emerald-50 sm:text-base">
-          من هنا ستتابع مستوى تقدمك، حضورك، تسميعك، وخطتك التعليمية.
-        </p>
+      <section className="theme-surface rounded-3xl p-5">
+        <h3 className="text-lg font-extrabold text-slate-900">ملف الطالب</h3>
+        <p className="mt-2 text-sm leading-8 text-slate-600">ستظهر هنا تقاريرك التعليمية وتوصيات المتابعة.</p>
       </section>
-
-      <div className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-[0_10px_30px_rgba(15,23,42,0.05)]">
-        <h3 className="text-xl font-extrabold text-slate-900">ملف الطالب</h3>
-        <p className="mt-3 text-sm leading-8 text-slate-600">
-          سيتم هنا عرض بياناتك التعليمية والتقارير الخاصة بك.
-        </p>
-      </div>
     </div>
   );
 }
@@ -147,11 +131,7 @@ export default function DashboardPage() {
   const { role, authLoading } = useAuth();
 
   if (authLoading) {
-    return (
-      <div className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-[0_10px_30px_rgba(15,23,42,0.05)]">
-        جاري تحميل لوحة التحكم...
-      </div>
-    );
+    return <div className="theme-surface rounded-3xl p-5 text-sm text-slate-500">جاري تحميل لوحة التحكم...</div>;
   }
 
   if (role === "teacher") return <TeacherDashboard />;

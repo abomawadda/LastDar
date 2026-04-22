@@ -1,50 +1,34 @@
-import { Users, GraduationCap, BookOpen } from "lucide-react";
+﻿import { Search, SlidersHorizontal } from "lucide-react";
 
-function StatCard({ title, value, note, icon: Icon }) {
+export default function StudentsToolbar({ search, onSearchChange }) {
   return (
-    <article className="rounded-[24px] border border-slate-200 bg-white p-5 shadow-[0_10px_30px_rgba(15,23,42,0.05)]">
-      <div className="flex items-start justify-between gap-3">
+    <section className="theme-surface rounded-3xl p-4 sm:p-5">
+      <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
         <div>
-          <p className="m-0 text-sm font-semibold text-slate-500">{title}</p>
-          <h3 className="mt-3 text-3xl font-extrabold text-slate-900">{value}</h3>
-          <p className="mt-2 text-sm text-slate-500">{note}</p>
+          <h2 className="text-lg font-extrabold text-slate-900">بحث وفرز</h2>
+          <p className="mt-1 text-sm text-slate-500">ابحث باسم الطالب أو الهاتف أو ولي الأمر.</p>
         </div>
 
-        <div className="rounded-2xl bg-emerald-50 p-3 text-emerald-700">
-          <Icon size={20} />
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+          <div className="app-input flex items-center gap-2 px-3 py-2.5">
+            <Search size={16} className="text-[var(--gold-dark)]" />
+            <input
+              value={search}
+              onChange={(e) => onSearchChange(e.target.value)}
+              placeholder="ابحث عن طالب..."
+              className="w-full min-w-[220px] border-0 bg-transparent text-sm text-slate-900 outline-none placeholder:text-slate-400"
+            />
+          </div>
+
+          <button
+            type="button"
+            className="inline-flex items-center justify-center gap-2 rounded-xl border border-[var(--border-gold)] bg-[var(--gold-surface)] px-4 py-2.5 text-sm font-bold text-[var(--gold-dark)]"
+          >
+            <SlidersHorizontal size={15} />
+            <span>فلترة</span>
+          </button>
         </div>
       </div>
-    </article>
-  );
-}
-
-export default function StudentStats({ stats }) {
-  return (
-    <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 2xl:grid-cols-4">
-      <StatCard
-        title="إجمالي الطلاب"
-        value={stats.total}
-        note="عدد السجلات الحالية"
-        icon={Users}
-      />
-      <StatCard
-        title="الطلاب الذكور"
-        value={stats.male}
-        note="إجمالي الذكور"
-        icon={Users}
-      />
-      <StatCard
-        title="الطالبات"
-        value={stats.female}
-        note="إجمالي الإناث"
-        icon={GraduationCap}
-      />
-      <StatCard
-        title="الطلاب النشطون"
-        value={stats.active}
-        note="حالة نشطة"
-        icon={BookOpen}
-      />
     </section>
   );
 }

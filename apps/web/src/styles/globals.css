@@ -1,24 +1,39 @@
-@import url("https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&family=Amiri:wght@400;700&family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap");
 @import "tailwindcss";
 
 :root {
   color-scheme: light;
-  --background: #f6f5f0;
-  --surface: #fffdf8;
-  --surface-2: #f8f7f2;
-  --text: #14213d;
-  --muted: #64748b;
-  --primary: #0f766e;
-  --primary-dark: #115e59;
-  --accent: #c8a44d;
-  --accent-soft: #f3e7be;
-  --border: #e7e2d6;
+  --bg-primary: #f7f6f3;
+  --bg-secondary: #ffffff;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f9f8f5;
+  --bg-input: #f3f2ef;
+  --gold: #8b6d2f;
+  --gold-light: #b8923f;
+  --gold-dark: #6b5220;
+  --gold-surface: #fdf8ef;
+  --text-primary: #1a1a1a;
+  --text-secondary: #4b5563;
+  --text-muted: #9ca3af;
+  --border: rgba(0, 0, 0, 0.07);
+  --border-strong: rgba(0, 0, 0, 0.12);
+  --border-gold: rgba(139, 109, 47, 0.25);
+  --success: #059669;
+  --warning: #d97706;
+  --danger: #dc2626;
+  --info: #2563eb;
+  --purple: #7c3aed;
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.03);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.06), 0 2px 4px -2px rgba(0, 0, 0, 0.03);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.06), 0 4px 6px -4px rgba(0, 0, 0, 0.03);
 }
 
 html,
 body,
 #root {
   min-height: 100%;
+  height: 100%;
 }
 
 html {
@@ -28,16 +43,21 @@ html {
 body {
   margin: 0;
   direction: rtl;
-  font-family: "Cairo", sans-serif;
-  color: var(--text);
-  background:
-    radial-gradient(circle at top right, rgba(200, 164, 77, 0.12), transparent 20%),
-    radial-gradient(circle at left center, rgba(15, 118, 110, 0.08), transparent 24%),
-    linear-gradient(180deg, #faf9f5 0%, #f4f2ec 100%);
+  font-family: "Tajawal", "Noto Naskh Arabic", sans-serif;
+  color: var(--text-primary);
+  background: var(--bg-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 * {
   box-sizing: border-box;
+}
+
+h1,
+h2,
+h3 {
+  font-family: "Amiri", "Tajawal", serif;
 }
 
 button,
@@ -53,7 +73,7 @@ a {
 }
 
 ::selection {
-  background: rgba(15, 118, 110, 0.16);
+  background: rgba(139, 109, 47, 0.16);
 }
 
 .islamic-pattern {
@@ -67,8 +87,8 @@ a {
   inset: 0;
   pointer-events: none;
   background-image:
-    radial-gradient(circle at 25px 25px, rgba(255,255,255,0.08) 2px, transparent 2.5px),
-    radial-gradient(circle at 75px 75px, rgba(255,255,255,0.06) 2px, transparent 2.5px);
+    radial-gradient(circle at 25px 25px, rgba(255, 255, 255, 0.12) 2px, transparent 2.5px),
+    radial-gradient(circle at 75px 75px, rgba(255, 255, 255, 0.09) 2px, transparent 2.5px);
   background-size: 100px 100px;
   opacity: 0.45;
 }
@@ -83,21 +103,192 @@ a {
   inset: 0;
   pointer-events: none;
   background-image:
-    linear-gradient(rgba(200, 164, 77, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(200, 164, 77, 0.05) 1px, transparent 1px);
+    linear-gradient(rgba(139, 109, 47, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(139, 109, 47, 0.06) 1px, transparent 1px);
   background-size: 28px 28px;
-  mask-image: linear-gradient(to bottom, rgba(0,0,0,0.28), transparent 85%);
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.35), transparent 85%);
 }
 
 .glass-surface {
-  background: rgba(255, 253, 248, 0.78);
-  backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 }
 
 .soft-shadow {
-  box-shadow: 0 18px 50px rgba(15, 23, 42, 0.08);
+  box-shadow: var(--shadow-lg);
 }
 
 .elevated-shadow {
-  box-shadow: 0 20px 60px rgba(15, 23, 42, 0.12);
+  box-shadow: var(--shadow-xl, 0 20px 25px -5px rgba(0, 0, 0, 0.07));
+}
+
+.app-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: var(--shadow-sm);
+}
+
+.app-input {
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.app-input:focus-within {
+  border-color: var(--gold-light);
+  box-shadow: 0 0 0 3px rgba(139, 109, 47, 0.08);
+}
+
+/* Theme overrides to align existing screens with the attached design palette */
+.bg-emerald-50 {
+  background-color: var(--gold-surface) !important;
+}
+.bg-emerald-600,
+.bg-emerald-700,
+.bg-emerald-800,
+.bg-emerald-900,
+.bg-emerald-950 {
+  background-color: var(--gold-dark) !important;
+}
+.text-emerald-50 {
+  color: #fffdf7 !important;
+}
+.text-emerald-700,
+.text-emerald-800,
+.text-emerald-900 {
+  color: var(--gold-dark) !important;
+}
+.border-emerald-200,
+.border-emerald-300,
+.border-emerald-500 {
+  border-color: var(--border-gold) !important;
+}
+
+.from-emerald-950,
+.from-emerald-900,
+.from-emerald-800,
+.from-emerald-700,
+.from-emerald-600 {
+  --tw-gradient-from: var(--gold-dark) var(--tw-gradient-from-position) !important;
+}
+.via-emerald-900,
+.via-emerald-800,
+.via-emerald-700 {
+  --tw-gradient-via: var(--gold) var(--tw-gradient-via-position) !important;
+}
+.to-emerald-900,
+.to-emerald-800,
+.to-emerald-700,
+.to-emerald-600 {
+  --tw-gradient-to: var(--gold-light) var(--tw-gradient-to-position) !important;
+}
+
+.hover\:bg-emerald-50:hover {
+  background-color: var(--gold-surface) !important;
+}
+.hover\:text-emerald-700:hover,
+.hover\:text-emerald-800:hover {
+  color: var(--gold-dark) !important;
+}
+.focus-within\:border-emerald-500:focus-within {
+  border-color: var(--gold-light) !important;
+}
+.focus-within\:ring-emerald-100:focus-within {
+  --tw-ring-color: rgba(139, 109, 47, 0.16) !important;
+}
+
+.theme-hero {
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+  border: 1px solid var(--border-gold);
+  box-shadow: var(--shadow-lg);
+}
+
+.theme-chip {
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.theme-surface {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  box-shadow: 0 10px 32px rgba(15, 23, 42, 0.05);
+  border-radius: 20px;
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.theme-stat-card {
+  background: linear-gradient(160deg, var(--gold-surface), var(--bg-card) 68%);
+  border: 1px solid var(--border-gold);
+  box-shadow: var(--shadow-sm);
+  border-radius: 14px;
+}
+
+.theme-icon-box {
+  background: var(--gold-surface);
+  color: var(--gold-dark);
+  border: 1px solid var(--border-gold);
+}
+
+.theme-muted-block {
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.theme-status-active {
+  background: var(--gold-surface);
+  color: var(--gold-dark);
+  border: 1px solid var(--border-gold);
+}
+
+.theme-status-muted {
+  background: #f3f4f6;
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+}
+
+.theme-table-shell {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.theme-table-shell thead {
+  background: var(--bg-input);
+}
+
+.theme-table-shell tbody tr {
+  border-color: var(--border);
+}
+
+.theme-table-shell tbody tr:hover {
+  background: #fcfaf4;
+}
+
+.app-input {
+  transition: border-color 140ms ease, box-shadow 140ms ease, background-color 140ms ease;
+}
+
+.app-input:hover {
+  background: #f8f7f3;
+}
+
+.mobile-card-reveal {
+  animation: mobile-reveal 360ms ease both;
+}
+
+@keyframes mobile-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
